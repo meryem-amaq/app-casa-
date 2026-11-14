@@ -1617,10 +1617,10 @@ exports.activerCompte = async (req, res) => {
     let emailResult = { success: false, skipped: true };
     try {
       emailResult = await emailService.sendWelcomeEmail(incube, rawPassword);
-      console.log(`📧 Email de bienvenue envoyé à ${emailClean}`);
+      console.log('📧 Email de bienvenue envoyé à', emailClean);
     } catch (emailErr) {
       // L'activation est déjà enregistrée en DB — l'admin peut renvoyer manuellement via /renvoyer-acces
-      console.error(`⚠️ Activation OK mais échec email vers ${emailClean}:`, emailErr.message);
+      console.error('⚠️ Activation OK mais échec email vers', emailClean, ':', emailErr.message);
       emailResult = { success: false, error: emailErr.message };
     }
 

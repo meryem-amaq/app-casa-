@@ -436,7 +436,7 @@ for (const p of distPaths) {
 if (activeDist) {
   console.log(`📁 Frontend statique servi depuis : ${activeDist}`);
   app.use(express.static(activeDist));
-  app.get('*', (req, res) => {
+  app.get('*', apiLimiter, (req, res) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
       return res.status(404).json({ message: 'Ressource non trouvée' });
     }
@@ -461,7 +461,7 @@ if (activeDist) {
   });
 } else {
   // Répondre 200 OK sur la racine pour ne jamais faire échouer le Health Check DigitalOcean
-  app.get('/', (req, res) => res.status(200).json({ status: 'OK', service: 'IDS Incubateur API' }));
+  app.get('/', apiLimiter, (req, res) => res.status(200).json({ status: 'OK', service: 'IDS Incubateur API' }));
   app.use((req, res) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
       return res.status(404).json({ message: 'Ressource non trouvée' });

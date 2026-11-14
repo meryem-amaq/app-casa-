@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Save, UserCheck, Radio, ShieldCheck, ShieldAlert, ArrowRightLeft, Camera, Upload, X, FileSpreadsheet, GraduationCap, Plus, Eye, FileText, Linkedin, Globe, Users, Target } from 'lucide-react';
-import api, { getPhotoUrl } from '../../api/axios';
+import api, { getPhotoUrl, sanitizeImageUrl } from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import ExcelImportModal from '../common/ExcelImportModal';
 import { SECTEURS_ACTIVITE, NIVEAUX_ETUDE_OPTIONS, NIVEAUX_ETUDE, normalizeNiveauEtude } from '../../data/constants';
@@ -381,7 +381,7 @@ export default function TabInfos({ incube, onUpdate }) {
               <div className="relative group shrink-0">
                 {photoPreview ? (
                   <img 
-                    src={photoPreview} 
+                    src={sanitizeImageUrl(photoPreview)} 
                     alt="Aperçu" 
                     className="w-16 h-16 rounded-xl object-cover border-2 border-primary-500 shadow-md"
                   />
@@ -1039,7 +1039,7 @@ export default function TabInfos({ incube, onUpdate }) {
             
             {/* L'image agrandie */}
             <img 
-              src={enlargedPhoto} 
+              src={sanitizeImageUrl(enlargedPhoto)} 
               alt="Photo de l'incubé" 
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border-4 border-white/10"
             />

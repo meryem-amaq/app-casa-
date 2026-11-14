@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import api, { getPhotoUrl } from '../api/axios';
+import api, { getPhotoUrl, sanitizeImageUrl } from '../api/axios';
 import toast from 'react-hot-toast';
 import { User, Mail, Phone, Lock, Upload, Save, Shield } from 'lucide-react';
 
@@ -130,7 +130,7 @@ export default function Profil() {
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                 <div className="relative group">
                   {photoPreview ? (
-                    <img src={photoPreview} alt="Avatar" className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 dark:border-dark-700 shadow-md" />
+                    <img src={sanitizeImageUrl(photoPreview)} alt="Avatar" className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 dark:border-dark-700 shadow-md" />
                   ) : (
                     <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary-500 to-navy-600 flex items-center justify-center text-white text-3xl font-black shadow-md">
                       {form.prenom?.[0]}{form.nom?.[0]}

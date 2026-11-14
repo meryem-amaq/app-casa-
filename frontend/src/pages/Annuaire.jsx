@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, Plus, Users, Briefcase, TrendingUp, Filter, X, Camera, Upload, FileSpreadsheet, Download, Calendar, AlertCircle, CheckCircle2, XCircle, Clock, Check, Bell, BellRing, RotateCw, UserCheck, KeyRound, Mail, GraduationCap, ClipboardList, Eye, UserX } from 'lucide-react';
-import api, { getPhotoUrl } from '../api/axios';
+import api, { getPhotoUrl, sanitizeImageUrl } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import ExcelImportModal from '../components/common/ExcelImportModal';
 import ExcelGlobalImportModal from '../components/common/ExcelGlobalImportModal';
@@ -1323,7 +1323,7 @@ export default function Annuaire() {
                     <div className="relative group shrink-0">
                       {previewUrl ? (
                         <img 
-                          src={previewUrl} 
+                          src={sanitizeImageUrl(previewUrl)} 
                           alt="Aperçu" 
                           className="w-16 h-16 rounded-xl object-cover border-2 border-primary-500 shadow-md"
                         />
@@ -1734,7 +1734,7 @@ export default function Annuaire() {
             
             {/* L'image agrandie */}
             <img 
-              src={enlargedPhoto} 
+              src={sanitizeImageUrl(enlargedPhoto)} 
               alt="Photo de l'incubé" 
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border-4 border-white/10"
             />

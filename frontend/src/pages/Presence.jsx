@@ -292,16 +292,23 @@ export default function Presence() {
       try {
         const presencesStr = localStorage.getItem('ids_ateliers_presences');
         const presences = presencesStr ? JSON.parse(presencesStr) : {};
-        if (!presences[id]) presences[id] = {};
-        presences[id][activeIncubeId] = {
-          present: true,
-          time: finalTime,
-          nom: finalNom,
-          prenom: finalPrenom,
-          email: finalEmail,
-          pp_numero: finalPpNumero
-        };
-        localStorage.setItem('ids_ateliers_presences', JSON.stringify(presences));
+        const safeAtelierId = String(id);
+        const safeIncId = String(activeIncubeId);
+        if (!['__proto__', 'constructor', 'prototype'].includes(safeAtelierId) &&
+            !['__proto__', 'constructor', 'prototype'].includes(safeIncId)) {
+          if (!Object.prototype.hasOwnProperty.call(presences, safeAtelierId)) {
+            presences[safeAtelierId] = {};
+          }
+          presences[safeAtelierId][safeIncId] = {
+            present: true,
+            time: finalTime,
+            nom: finalNom,
+            prenom: finalPrenom,
+            email: finalEmail,
+            pp_numero: finalPpNumero
+          };
+          localStorage.setItem('ids_ateliers_presences', JSON.stringify(presences));
+        }
       } catch (storageErr) {
         console.warn("Erreur sauvegarde locale :", storageErr);
       }

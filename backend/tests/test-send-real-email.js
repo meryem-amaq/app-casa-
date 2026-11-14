@@ -10,8 +10,8 @@ if (!TARGET_EMAIL) {
 
 async function runRealEmailTest() {
   console.log("================================================================================");
-  console.log(`🚀 TEST D'ENVOI D'EMAILS RÉELS VERS : ${TARGET_EMAIL}`);
-  console.log(`📤 Expéditeur SMTP configuré        : ${process.env.MAIL_USERNAME || process.env.EMAIL_USER}`);
+  console.log("🚀 TEST D'ENVOI D'EMAILS RÉELS");
+  console.log("📤 Configuration SMTP vérifiée");
   console.log("================================================================================\n");
 
   // 1. Email de Confirmation de Réservation d'Espace

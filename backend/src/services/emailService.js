@@ -345,20 +345,20 @@ const sendEmail = async ({ to, cc, subject, text, html }) => {
   if (!transporter) {
     console.log(`\n======================================================`);
     console.log(`📧 [SIMULATION EMAIL IDS] (SMTP non configuré dans .env)`);
-    console.log(`➡️ Destinataire : ${recipient}`);
-    if (mailOptions.cc) console.log(`📋 Copie (CC)   : ${mailOptions.cc}`);
-    console.log(`📌 Sujet        : ${subject}`);
-    console.log(`💬 Message brut : ${text || 'Contenu HTML généré'}`);
+    console.log(`➡️ Destinataire :`, recipient);
+    if (mailOptions.cc) console.log(`📋 Copie (CC)   :`, mailOptions.cc);
+    console.log(`📌 Sujet        :`, subject);
+    console.log(`💬 Contenu      : [Contenu masqué pour protection des données]`);
     console.log(`======================================================\n`);
     return { success: true, simulated: true, recipient, subject, cc: mailOptions.cc };
   }
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ [EMAIL ENVOYÉ RÉELLEMENT] ID: ${info.messageId} vers ${recipient}${mailOptions.cc ? ` (CC: ${mailOptions.cc})` : ''}`);
+    console.log(`✅ [EMAIL ENVOYÉ RÉELLEMENT] ID:`, info.messageId, `vers`, recipient);
     return { success: true, simulated: false, messageId: info.messageId, recipient, subject, cc: mailOptions.cc };
   } catch (error) {
-    console.error(`❌ [ERREUR SMTP ENVOI EMAIL] vers ${recipient}:`, error.message);
+    console.error('❌ [ERREUR SMTP ENVOI EMAIL] vers', recipient, ':', error.message);
     return { success: false, error: error.message, recipient, subject };
   }
 };
