@@ -1,4 +1,5 @@
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 
 const api = axios.create({
   baseURL: '/api',
@@ -25,15 +26,23 @@ api.interceptors.response.use(
 
 export const sanitizeImageUrl = (url) => {
   if (!url || typeof url !== 'string') return '';
-  const trimmed = url.trim();
-  // Protection stricte anti-XSS (Recommandation CodeQL) : interdire javascript:, vbscript: et data non-image
-  if (/^(javascript|vbscript):/i.test(trimmed)) {
+  const clean = DOMPurify.sanitize(url.trim());
+  if (clean.startsWith('blob:')) {
+    return clean;
+  }
+  try {
+    const base = typeof window !== 'undefined' && window.location ? window.location.origin : 'http://localhost';
+    const parsed = new URL(clean, base);
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      return encodeURI(parsed.href);
+    }
+    if (parsed.protocol === 'data:' && parsed.href.startsWith('data:image/')) {
+      return encodeURI(parsed.href);
+    }
+  } catch (e) {
     return '';
   }
-  if (trimmed.startsWith('data:') && !trimmed.startsWith('data:image/')) {
-    return '';
-  }
-  return trimmed;
+  return '';
 };
 
 export const getPhotoUrl = (path) => {

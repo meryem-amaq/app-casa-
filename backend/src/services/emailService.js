@@ -355,10 +355,10 @@ const sendEmail = async ({ to, cc, subject, text, html }) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ [EMAIL ENVOYÉ RÉELLEMENT] ID:`, info.messageId, `vers`, recipient);
+    console.log('✅ [EMAIL ENVOYÉ RÉELLEMENT] ID: %s', info?.messageId || 'OK');
     return { success: true, simulated: false, messageId: info.messageId, recipient, subject, cc: mailOptions.cc };
   } catch (error) {
-    console.error('❌ [ERREUR SMTP ENVOI EMAIL] vers', recipient, ':', error.message);
+    console.error('❌ [ERREUR SMTP ENVOI EMAIL]: %s', error?.message || 'Erreur inconnue');
     return { success: false, error: error.message, recipient, subject };
   }
 };
@@ -875,7 +875,7 @@ const sendWelcomeEmail = async (incube, passwordInitial = null, options = {}) =>
 
   // Sécurité Lancement Portail : blocage temporaire des e-mails d'activation avant le lancement officiel
   if (process.env.ENABLE_PORTAL_WELCOME_EMAILS !== 'true') {
-    console.log(`🔒 [SÉCURITÉ IDS] Envoi d'identifiants portail temporairement désactivé pour : ${recipient}`);
+    console.log('🔒 [SÉCURITÉ IDS] Envoi d\'identifiants portail temporairement désactivé');
     return { success: true, blocked: true, message: "Envoi d'identifiants portail temporairement désactivé avant le lancement officiel." };
   }
 

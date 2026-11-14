@@ -107,8 +107,8 @@ const auth = require('./middleware/auth');
 const requireStaff = require('./middleware/requireStaff');
 const { apiLimiter } = require('./middleware/rateLimiter');
 
-// Protection globale contre les attaques DoS / brute-force sur l'API (CodeQL / OWASP)
-app.use('/api', apiLimiter);
+// Protection globale contre les attaques DoS / brute-force sur TOUTES les routes (CodeQL / OWASP ASVS)
+app.use(apiLimiter);
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));

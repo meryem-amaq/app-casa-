@@ -288,16 +288,25 @@ export default function Presence() {
       const finalEmail = resolved.email || cleanEmail;
       const finalTime = resolved.time || timeStr;
 
-      // 2. Sauvegarde dans le localStorage local pour résilience hors-ligne
+      // 2. Sauvegarde dans le localStorage local pour résilience hors-ligne (Protégé contre la pollution de prototype)
       try {
         const presencesStr = localStorage.getItem('ids_ateliers_presences');
-        const presences = presencesStr ? JSON.parse(presencesStr) : {};
-        const safeAtelierId = String(id);
-        const safeIncId = String(activeIncubeId);
-        if (!['__proto__', 'constructor', 'prototype'].includes(safeAtelierId) &&
-            !['__proto__', 'constructor', 'prototype'].includes(safeIncId)) {
-          if (!Object.prototype.hasOwnProperty.call(presences, safeAtelierId)) {
-            presences[safeAtelierId] = {};
+        const rawPresences = presencesStr ? JSON.parse(presencesStr) : {};
+        const presences = Object.create(null);
+        if (rawPresences && typeof rawPresences === 'object') {
+          for (const k of Object.keys(rawPresences)) {
+            if (k !== '__proto__' && k !== 'constructor' && k !== 'prototype') {
+              presences[k] = rawPresences[k];
+            }
+          }
+        }
+        const safeAtelierId = String(id).replace(/[^a-zA-Z0-9_-]/g, '');
+        const safeIncId = String(activeIncubeId).replace(/[^a-zA-Z0-9_-]/g, '');
+        if (safeAtelierId && safeIncId &&
+            safeAtelierId !== '__proto__' && safeAtelierId !== 'constructor' && safeAtelierId !== 'prototype' &&
+            safeIncId !== '__proto__' && safeIncId !== 'constructor' && safeIncId !== 'prototype') {
+          if (!presences[safeAtelierId] || typeof presences[safeAtelierId] !== 'object') {
+            presences[safeAtelierId] = Object.create(null);
           }
           presences[safeAtelierId][safeIncId] = {
             present: true,

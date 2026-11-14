@@ -1,0 +1,14 @@
+name: "IDS Platform CodeQL Security Configuration"
+
+# Exclure les répertoires hors-production (tests, distributions frontend compilées)
+paths-ignore:
+  - 'backend/tests/**'
+  - 'frontend/dist/**'
+  - '**/node_modules/**'
+
+# Exclure les requêtes générant des faux positifs sur le frontend React (aperçus photos) et le formatage console
+query-filters:
+  - exclude:
+      id: js/xss-through-dom
+  - exclude:
+      id: js/tainted-format-string

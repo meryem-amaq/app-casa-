@@ -933,7 +933,7 @@ exports.create = async (req, res) => {
             message: 'Cette adresse email appartient à un compte d\'administration et ne peut pas être rattachée à un dossier incubé.'
           });
         }
-        console.log(`ℹ️ Compte User incubé existant (${emailClean}) détecté — liaison sans modification.`);
+        console.log('ℹ️ Compte User incubé existant détecté — liaison sans modification.');
       }
 
       // Lier user_id directement dans data (sera passé à Incube.create dans la même transaction)
@@ -981,7 +981,7 @@ exports.create = async (req, res) => {
       }).catch(err => console.error('Erreur diffusion tourniquet F18:', err.message));
     }
 
-    console.log(`✅ Incubé créé : ${incube.nom_incube} (id=${incube.id}, user_id=${incube.user_id ?? 'aucun'})`);
+    console.log('✅ Incubé créé avec succès (id=%s)', incube.id);
 
     // Récupérer l'incubé avec ses relations pour une réponse complète au frontend
     const createdIncube = await Incube.findByPk(incube.id, {
@@ -1608,7 +1608,7 @@ exports.activerCompte = async (req, res) => {
     incube.est_suspendu = false;
     await incube.save();
 
-    console.log(`✅ Compte activé : ${emailClean} (user_id=${userAccount.id}, incube_id=${incube.id})`);
+    console.log('✅ Compte activé (user_id=%s, incube_id=%s)', userAccount.id, incube.id);
 
     // Synchronisation instantanée de la liste blanche Cloud
     syncWhitelistCloud().catch(e => console.warn('⚠️ [Whitelist] Erreur sync après activation:', e.message));
@@ -1617,10 +1617,10 @@ exports.activerCompte = async (req, res) => {
     let emailResult = { success: false, skipped: true };
     try {
       emailResult = await emailService.sendWelcomeEmail(incube, rawPassword);
-      console.log('📧 Email de bienvenue envoyé à', emailClean);
+      console.log('📧 Email de bienvenue envoyé avec succès');
     } catch (emailErr) {
       // L'activation est déjà enregistrée en DB — l'admin peut renvoyer manuellement via /renvoyer-acces
-      console.error('⚠️ Activation OK mais échec email vers', emailClean, ':', emailErr.message);
+      console.error('⚠️ Activation OK mais échec email: %s', emailErr?.message || '');
       emailResult = { success: false, error: emailErr.message };
     }
 
