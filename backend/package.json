@@ -10,7 +10,7 @@
     "seed": "npx sequelize-cli db:seed:all",
     "seed:init": "node database/seed.js",
     "create-admin": "node database/create-admin.js",
-    "test": "node tests/validation.test.js",
+    "test": "node tests/validation.test.js && node tests/backup-security.test.js",
     "sync:cloud": "node full_sync_cloud_to_local.js",
     "sync:whitelist": "node scripts/push-whitelist-to-cloud.js",
     "sync:pull": "node scripts/pull-reservations-from-cloud.js",

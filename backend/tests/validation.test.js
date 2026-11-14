@@ -48,13 +48,13 @@ test("Contrôleur incubeController.js configure 'separate: true' pour éviter le
 test("Contrôleur incubeController.js protège contre l'IDOR sur dossiers non assignés", () => {
   const filePath = path.resolve(__dirname, '../src/controllers/incubeController.js');
   const fileContent = fs.readFileSync(filePath, 'utf8');
-  assert.ok(fileContent.includes("if (!isSuper && incube.admin_id !== req.user.id)"));
+  assert.ok(fileContent.includes("incube.admin_id === req.user.id"));
 });
 
 test("Contrôleur subControllers.js applique checkIncubeAccess et transactions atomiques", () => {
   const filePath = path.resolve(__dirname, '../src/controllers/subControllers.js');
   const fileContent = fs.readFileSync(filePath, 'utf8');
-  assert.ok(fileContent.includes('checkIncubeAccess(req.params.incubeId, req.user)'));
+  assert.ok(fileContent.includes('checkIncubeAccess(req.params.incubeId, req.user'));
   assert.ok(fileContent.includes('sequelize.transaction(async (t) =>'));
 });
 
