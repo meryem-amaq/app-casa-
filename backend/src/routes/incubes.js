@@ -7,6 +7,9 @@ const requireStaff = require('../middleware/requireStaff');
 const upload = require('../middleware/upload');
 const incubeCtrl = require('../controllers/incubeController');
 const sub = require('../controllers/subControllers');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 // === Incubés ===
 router.get('/mon-profil', auth, authorizeIncube, incubeCtrl.getMonProfil);

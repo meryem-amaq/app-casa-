@@ -3,6 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
 const upload = require('../middleware/upload');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 const { Atelier, Incube, PresenceAtelier, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const syncService = require('../services/SyncService');

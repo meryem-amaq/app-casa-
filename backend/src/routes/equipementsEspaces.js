@@ -3,6 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
 const { EquipementEspace } = require('../models');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 // Données initiales par défaut si la base de données est vide
 const DEFAULT_EQUIPEMENTS = [

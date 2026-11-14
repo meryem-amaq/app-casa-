@@ -4,7 +4,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
 const isSuperAdmin = require('../middleware/isSuperAdmin');
-const { publicWriteLimiter } = require('../middleware/rateLimiter');
+const { apiLimiter, publicWriteLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 const { PresenceAtelier, Incube, Atelier, User, Attendance, TourniquetUser, RhDetail, sequelize } = require('../models');
 const tourniquetService = require('../services/tourniquetService');
 

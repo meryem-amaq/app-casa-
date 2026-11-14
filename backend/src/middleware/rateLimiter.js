@@ -93,7 +93,30 @@ const publicWriteLimiter = rateLimit({
   }
 });
 
+/**
+ * Rate limiter global pour l'ensemble des routes d'API
+ * Protection anti-DoS et limitation de requêtes (Recommandation CodeQL / OWASP ASVS)
+ * - 1 000 requêtes par tranche de 15 minutes par IP
+ * - Exemption totale pour le réseau local / LAN (10.x.x.x, 192.168.x.x, 127.0.0.1)
+ */
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: parseInt(process.env.RATE_LIMIT_GLOBAL_MAX, 10) || 1000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    if (process.env.DISABLE_RATE_LIMIT === 'true') return true;
+    if (process.env.NODE_ENV === 'development') return true;
+    if (isPrivateOrLocalIP(req.ip)) return true;
+    return false;
+  },
+  message: {
+    message: 'Trop de requêtes envoyées vers le serveur. Veuillez patienter avant de réessayer.'
+  }
+});
+
 module.exports = {
+  apiLimiter,
   loginLimiter,
   passwordResetLimiter,
   publicWriteLimiter,

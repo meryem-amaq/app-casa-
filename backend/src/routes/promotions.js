@@ -3,6 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
 const promotionCtrl = require('../controllers/promotionController');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 router.get('/', auth, promotionCtrl.getAll);
 router.post('/', auth, requireStaff, promotionCtrl.create);

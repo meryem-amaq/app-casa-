@@ -3,6 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
 const { Formation, Incube } = require('../models');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 // GET /api/formations - Récupère toutes les formations avec les infos de l'incubé
 router.get('/', auth, async (req, res) => {

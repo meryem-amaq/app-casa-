@@ -3,6 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const isSuperAdmin = require('../middleware/isSuperAdmin');
 const userCtrl = require('../controllers/userController');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 const upload = require('../middleware/upload');
 const tourniquetService = require('../services/tourniquetService');

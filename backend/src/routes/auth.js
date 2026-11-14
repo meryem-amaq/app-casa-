@@ -5,7 +5,9 @@ const authMiddleware = require('../middleware/auth');
 const isSuperAdmin = require('../middleware/isSuperAdmin');
 
 const upload = require('../middleware/upload');
-const { loginLimiter, passwordResetLimiter } = require('../middleware/rateLimiter');
+const { apiLimiter, loginLimiter, passwordResetLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 router.post('/login', loginLimiter, authController.login);
 router.post('/logout', authController.logout);

@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const isSuperAdmin = require('../middleware/isSuperAdmin');
+const { apiLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 const { PresenceAtelier, ReservationEspace, EquipementEspace, Incube, Atelier, SuiviEngagement, Attendance, sequelize } = require('../models');
 const { Op } = require('sequelize');
 

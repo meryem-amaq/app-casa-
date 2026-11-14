@@ -8,7 +8,9 @@ const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
 const { getJourFerieInfo } = require('../utils/joursFeries');
 const { getTokenFromRequest } = require('../utils/authCookie');
-const { publicWriteLimiter } = require('../middleware/rateLimiter');
+const { apiLimiter, publicWriteLimiter } = require('../middleware/rateLimiter');
+
+router.use(apiLimiter);
 
 /**
  * Helper : Vérifie si la requête possède un token d'authentification valide

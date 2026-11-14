@@ -105,6 +105,10 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads'), staticUp
 
 const auth = require('./middleware/auth');
 const requireStaff = require('./middleware/requireStaff');
+const { apiLimiter } = require('./middleware/rateLimiter');
+
+// Protection globale contre les attaques DoS / brute-force sur l'API (CodeQL / OWASP)
+app.use('/api', apiLimiter);
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));

@@ -3,8 +3,10 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const isSuperAdmin = require('../middleware/isSuperAdmin');
 const rapportCtrl = require('../controllers/rapportController');
+const { apiLimiter } = require('../middleware/rateLimiter');
 
-// Routes protégées par authentification (Réservées au Super Admin)
+// Limitation de débit et authentification (Réservées au Super Admin)
+router.use(apiLimiter);
 router.use(auth);
 router.use(isSuperAdmin);
 

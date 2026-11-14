@@ -5,8 +5,10 @@ const { Op } = require('sequelize');
 const emailService = require('../services/emailService');
 const auth = require('../middleware/auth');
 const requireStaff = require('../middleware/requireStaff');
+const { apiLimiter } = require('../middleware/rateLimiter');
 
-// Tous les endpoints de rendez-vous nécessitent une authentification
+// Tous les endpoints de rendez-vous nécessitent une authentification et sont protégés en débit
+router.use(apiLimiter);
 router.use(auth);
 
 // GET /api/rendezvous - Liste tous les rendez-vous avec filtrage optionnel
