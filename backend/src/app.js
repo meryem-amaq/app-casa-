@@ -521,6 +521,7 @@ sequelize.authenticate()
       await checkAndAddColumn('rh_detail', 'badge_id', 'VARCHAR(50) NULL');
       await checkAndAddColumn('rh_detail', 'matricule', 'INT NULL');
       await checkAndAddColumn('reservation_espace', 'cloud_id', 'INT NULL');
+      await checkAndAddColumn('fiches_suivi', 'objet_reunion', 'VARCHAR(255) NULL');
     } catch (migErr) {
       console.warn('⚠️ Note auto-migration:', migErr.message);
     }
